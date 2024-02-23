@@ -6,9 +6,11 @@ let input = document.querySelector("input");
 let tasks = {};
 
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("drawtask call")
-    drawTasks()
-})
+  if (localStorage.getItem("myTasks")) {
+    tasks = JSON.parse(localStorage.getItem("myTasks"));
+  }
+  drawTasks();
+});
 
 form.addEventListener("submit", (event) => {
   console.log(event.target.querySelector("input").value);
@@ -40,6 +42,14 @@ const setTasks = (inputValue) => {
 };
 
 const drawTasks = () => {
+  localStorage.setItem("myTasks", JSON.stringify(tasks));
+  if (Object.values(tasks).length === 0) {
+    tasksList.innerHTML = `
+    <div id="tasks-list" class="mt-2">
+        <div class="alert alert-success text-center">No pending tasks</div>
+    </div>`;
+    return
+  }
   tasksList.innerHTML = " ";
   Object.values(tasks).forEach((task) => {
     console.log(task);
